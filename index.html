@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Dashboard</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #f1f1f1;
+        }
+
+        /* Navbar styles */
+        .navbar {
+            background-color: #000;
+            color: #f1f1f1;
+            padding: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar .logo {
+            font-weight: bold;
+            color: #f05454;
+        }
+
+        .navbar a {
+            color: #f05454;
+            margin-left: 1em;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #ffffff;
+        }
+
+        /* Dashboard content styles */
+        .dashboard {
+            padding: 2em;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .dashboard h1 {
+            color: #f05454;
+        }
+
+        .product-selection, .checkout {
+            margin-top: 20px;
+            background-color: #1f1f1f;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .product-selection label, .checkout label {
+            color: #f1f1f1;
+            font-weight: bold;
+        }
+
+        .product-selection select, .product-selection input, .checkout input {
+            padding: 10px;
+            margin-top: 10px;
+            width: 100%;
+            background-color: #333;
+            color: #f1f1f1;
+            border: 1px solid #444;
+            border-radius: 5px;
+        }
+
+        /* Checkout button styles */
+        .checkout button {
+            background-color: #f05454;
+            color: #f1f1f1;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .checkout button:hover {
+            background-color: #ff4e4e;
+        }
+
+        /* Message styles */
+        .warning {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .warning.success {
+            color: #4caf50;
+        }
+
+        .warning.error {
+            color: #f05454;
+        }
+
+        /* Transaction History styles */
+        .history-section {
+            margin-top: 20px;
+            background-color: #1f1f1f;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .transaction-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .transaction-item {
+            background-color: #333;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .total-display {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #f05454;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<div class="navbar">
+    <div class="logo">Restaurant</div>
+    <div>
+        <a href="#" onclick="showHistory()">History Log</a>
+        <a href="#" onclick="showDashboard()">Home</a>
+    </div>
+</div>
+
+<!-- Dashboard Section -->
+<div class="dashboard" id="dashboardSection">
+    <h1>Point of Sale - Food Products</h1>
+
+    <!-- Product Selection -->
+    <div class="product-selection">
+        <label for="product">Select Product:</label>
+        <select id="product" onchange="updateTotal()">
+            <option value="pizza" data-price="12">Pizza - $12</option>
+            <option value="burger" data-price="8">Burger - $8</option>
+            <option value="pasta" data-price="10">Pasta - $10</option>
+            <option value="salad" data-price="6">Salad - $6</option>
+            <option value="sushi" data-price="15">Sushi - $15</option>
+            <option value="sandwich" data-price="5">Sandwich - $5</option>
+            <option value="soup" data-price="4">Soup - $4</option>
+            <option value="steak" data-price="20">Steak - $20</option>
+            <option value="icecream" data-price="3">Ice Cream - $3</option>
+            <option value="fries" data-price="2">Fries - $2</option>
+        </select>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" min="1" value="1" onchange="updateTotal()">
+        
+        <div class="total-display">
+            Total: $<span id="totalAmount">0.00</span>
+        </div>
+    </div>
+
+    <!-- Checkout Section -->
+    <div class="checkout">
+        <label for="payment">Payment Amount:</label>
+        <input type="number" id="payment" placeholder="Enter payment amount">
+
+        <button onclick="processTransaction()">Checkout</button>
+
+        <div id="message" class="warning"></div>
+    </div>
+</div>
+
+<!-- History Section -->
+<div class="dashboard" id="historySection" style="display: none;">
+    <h1>Transaction History</h1>
+    <div class="history-section">
+        <ul id="transactionList" class="transaction-list"></ul>
+    </div>
+</div>
+
+<script>
+    function updateTotal() {
+        const product = document.getElementById("product");
+        const quantity = parseInt(document.getElementById("quantity").value) || 0;
+        const price = parseFloat(product.options[product.selectedIndex].dataset.price);
+        const total = price * quantity;
+        document.getElementById("totalAmount").textContent = total.toFixed(2);
+    }
+
+    function processTransaction() {
+        const product = document.getElementById("product");
+        const productName = product.options[product.selectedIndex].text;
+        const price = parseFloat(product.options[product.selectedIndex].dataset.price);
+        const quantity = parseInt(document.getElementById("quantity").value);
+        const payment = parseFloat(document.getElementById("payment").value);
+        const total = price * quantity;
+        const message = document.getElementById("message");
+
+        // Validate inputs
+        if (isNaN(quantity) || isNaN(payment) || quantity <= 0 || payment <= 0) {
+            message.style.color = 'red';
+            message.innerText = 'Please enter valid quantity and payment amount.';
+            return;
+        }
+
+        // Check if payment is sufficient
+        if (payment < total) {
+            message.style.color = 'red';
+            message.innerText = 'Insufficient payment amount.';
+            return;
+        }
+
+        const change = payment - total;
+
+        // Send transaction to backend
+        fetch('process_transaction.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                product: productName,
+                quantity: quantity,
+                total: total,
+                payment: payment,
+                change: change
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                message.style.color = 'green';
+                message.innerText = `Transaction successful! Change: $${change.toFixed(2)}`;
+                
+                // Reset form
+                document.getElementById("quantity").value = "1";
+                document.getElementById("payment").value = "";
+                updateTotal();
+            } else {
+                message.style.color = 'red';
+                message.innerText = data.message;
+            }
+        })
+        .catch(error => {
+            message.style.color = 'red';
+            message.innerText = 'Error processing transaction. Please try again.';
+        });
+    }
+
+    function showHistory() {
+        document.getElementById("dashboardSection").style.display = "none";
+        document.getElementById("historySection").style.display = "block";
+        loadTransactions();
+    }
+
+    function showDashboard() {
+        document.getElementById("dashboardSection").style.display = "block";
+        document.getElementById("historySection").style.display = "none";
+    }
+
+    function loadTransactions() {
+        fetch('get_transactions.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    displayTransactions(data.data);
+                } else {
+                    console.error(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function displayTransactions(transactions) {
+        const transactionList = document.getElementById("transactionList");
+        transactionList.innerHTML = "";
+
+        transactions.forEach(transaction => {
+            const li = document.createElement("li");
+            li.className = "transaction-item";
+            li.innerHTML = `
+                <div>Date: ${transaction.transaction_date}</div>
+                <div>Product: ${transaction.product}</div>
+                <div>Quantity: ${transaction.quantity}</div>
+                <div>Total: $${parseFloat(transaction.total_amount).toFixed(2)}</div>
+                <div>Payment: $${parseFloat(transaction.payment_amount).toFixed(2)}</div>
+                <div>Change: $${parseFloat(transaction.change_amount).toFixed(2)}</div>
+            `;
+            transactionList.appendChild(li);
+        });
+    }
+
+    // Initialize total on page load
+    updateTotal();
+</script>
+
+</body>
+</html> 
