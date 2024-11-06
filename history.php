@@ -344,8 +344,8 @@ $unionTransactions = fetchUnionTransactions();
         document.getElementById(tableName).classList.remove('hidden');
     }
 
-    showTable('leftJoin');
+    showTable('leftjoin');
 </script>
 
 </body>
-</html>
+</html> 
