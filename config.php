@@ -1,7 +1,7 @@
 <?php
 
 define('DB_SERVER', 'localhost');
-define('DB_NAME', 'cardines');
+define('DB_NAME', 'cardz');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 
