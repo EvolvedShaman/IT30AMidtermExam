@@ -97,7 +97,9 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `username`, `password`, `created_at`, `first_login`) VALUES
 (1, 'ivan', '$2y$10$KGHyUES/7PDp3HeA/9PB5OTCsIswgONv7s1sgXVGQgWCbWdnYyoW.', '2024-11-03 10:14:49', 1),
 (2, 'jane', '$2y$10$tt18o7XNwgEJaDPjRcBPtOAPW/SYAkTkK5S8KzsKJFdYT.7xLFl9W', '2024-11-03 13:26:07', 1);
-
+(3, 'jane', '$2y$10$tt18o7XNwgEJaDPjRcBPtOAPW/SYAkTkK5S8KzsKJFdYT.7xLFl9W', '2024-11-03 13:26:07', 2);
+(4, 'jane', '$2y$10$tt18o7XNwgEJaDPjRcBPtOAPW/SYAkTkK5S8KzsKJFdYT.7xLFl9W', '2024-11-03 13:26:07', 3);
+(5, 'jane', '$2y$10$tt18o7XNwgEJaDPjRcBPtOAPW/SYAkTkK5S8KzsKJFdYT.7xLFl9W', '2024-11-03 13:26:07', 4);
 --
 -- Indexes for dumped tables
 --
