@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2024 at 02:52 PM
+-- Generation Time: Nov 06, 2024 at 07:34 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `cardines`
+-- Database: `cardz`
 --
 
 -- --------------------------------------------------------
@@ -56,15 +56,15 @@ INSERT INTO `products` (`id`, `name`, `price`, `stock`) VALUES
 -- Table structure for table `transactions`
 --
 
-CREATE TABLE IF NOT EXISTS transactions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    product VARCHAR(255) NOT NULL,
-    quantity INT NOT NULL,
-    total_amount DECIMAL(10,2) NOT NULL,
-    payment_amount DECIMAL(10,2) NOT NULL,
-    change_amount DECIMAL(10,2) NOT NULL,
-    transaction_date DATETIME NOT NULL
-);
+CREATE TABLE `transactions` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `total_amount` decimal(10,2) NOT NULL,
+  `payment` decimal(10,2) NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `transactions`
